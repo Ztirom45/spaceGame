@@ -1,0 +1,6 @@
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_timer.h>
+
+#define WIN_W 1000
+#define WIN_H 1000
