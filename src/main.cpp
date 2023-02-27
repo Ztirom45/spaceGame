@@ -31,5 +31,6 @@ int main(){
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000/60);//60 fps
 	}
+	distroy_images();
 	SDL_Quit();
 }

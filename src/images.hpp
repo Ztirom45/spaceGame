@@ -5,11 +5,10 @@
 #include <string>
 #include <map>
 #include <dirent.h>
+#include <iostream>
 
+std::map<std::string, SDL_Texture*> textures;
 
-std::map<std::string, SDL_Texture*> texture_dict;
-
-SDL_Surface* texture_list[IMAGE_COUNT] = {};
 
 
 void load_images(){
@@ -19,8 +18,9 @@ void load_images(){
 				continue; // skip hidden files
 			
 			SDL_Surface* surface 	= IMG_Load(f->d_name);
-			texture_dict[f->d_name] = SDL_CreateTextureFromSurface(rend, surface);
-			printf("Includet File: %s\n", f->d_name);
+			textures[f->d_name] = SDL_CreateTextureFromSurface(rend, surface);
+			printf("Includet image: %s\n", f->d_name);
+			SDL_FreeSurface(surface);
 		}
 		closedir(dir);
 	}
@@ -28,5 +28,8 @@ void load_images(){
 }
 
 void distroy_images(){
-	
+	std::map<std::string, SDL_Texture*>::reverse_iterator i;
+	for(i=textures.rbegin(); i!=textures.rend(); ++i){  
+		SDL_DestroyTexture((*i).second);
+	}  
 }
