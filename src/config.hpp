@@ -4,3 +4,5 @@
 
 #define WIN_W 1000
 #define WIN_H 1000
+
+#define IMAGE_COUNT 1
