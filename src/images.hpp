@@ -7,19 +7,21 @@
 #include <dirent.h>
 #include <iostream>
 
-std::map<std::string, SDL_Texture*> textures;
+static std::map<std::string, SDL_Texture*> textures;
 
 
 
 void load_images(){
+	
 	if (auto dir = opendir("img")) {
 		while (auto f = readdir(dir)) {
 			if (!f->d_name || f->d_name[0] == '.')
 				continue; // skip hidden files
-			
-			SDL_Surface* surface 	= IMG_Load(f->d_name);
-			textures[f->d_name] = SDL_CreateTextureFromSurface(rend, surface);
-			printf("Includet image: %s\n", f->d_name);
+			std::string str(f->d_name);
+			str = "img/"+str;
+			SDL_Surface* surface 	= IMG_Load(str.c_str());
+			textures[str] = SDL_CreateTextureFromSurface(rend, surface);
+			std::cout<<"Includet image: " << str << ":\t" << &textures[str] <<"\n";
 			SDL_FreeSurface(surface);
 		}
 		closedir(dir);
@@ -30,6 +32,7 @@ void load_images(){
 void distroy_images(){
 	std::map<std::string, SDL_Texture*>::reverse_iterator i;
 	for(i=textures.rbegin(); i!=textures.rend(); ++i){  
+		std::cout<<"distroyed: " << (*i).first <<"\n";
 		SDL_DestroyTexture((*i).second);
 	}  
 }

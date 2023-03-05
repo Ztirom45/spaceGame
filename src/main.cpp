@@ -1,19 +1,36 @@
-
+//SDL
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
 
+#include <string>
+#include <map>
+#include <dirent.h>
+#include <iostream>
+#include <vector>
 
+//mocros
+#define KEY_W 119
+#define KEY_A 97
+#define KEY_S 115
+#define KEY_D 100
+#define KEY_SPACE 32
 
-//statics
+//static vars
 static bool loop = true;
 static SDL_Renderer* rend;
-//static bool keys[4294967296];//sizeof Uint32
+static bool keys[256];//sizeof Uint8 cant't use non letter keys
+
 
 //libs
-#include "images.hpp"
-#include "player.hpp"
 #include "config.hpp"
+#include "cvec.hpp"
+#include "hitbox.hpp"
+#include "images.hpp"
+#include "entity.hpp"
+#include "player.hpp"
+
+
 
 void init(){
 	//init
@@ -38,10 +55,10 @@ void events(){
 				loop = false;
 				break;
 			case SDL_KEYDOWN:
-				//keys[event.key.keysym.sym] = true;
+				keys[event.key.keysym.sym] = true;
 				break;
 			case SDL_KEYUP:
-				//keys[event.key.keysym.sym] = false;
+				keys[event.key.keysym.sym] = false;
 				break;
 			default:
 				break;
@@ -50,17 +67,39 @@ void events(){
 }
 int main(){
 	init();
+	//create sky
+	sky my_sky;
+	my_sky.init();
+
+	//craete player
 	player my_player;
-	my_player.init("Herz_des_Dschungels.png");
-	my_player.rect_dsp.x = 100;
-	my_player.rect_dsp.y = 100;
+	my_player.init({"img/SpaceShipL.png","img/SpaceShipR.png","img/SpaceShipM.png"});
+	
+	my_player.rect_dsp.x = 500;
+	my_player.rect_dsp.y = 500;
+	
+	//create enime
+	level my_level;
+	my_level.init("img/Ztirom.png");
+	my_level.set_enemys({{100,100},{200,100},{300,100},{300,100}});
+	
+
 	while(loop){
+		//update
+		events();
+		my_player.update();
+		my_sky.update();
+		my_level.update(&my_player.my_shot);
+		
 		//clear
 		SDL_RenderClear(rend);
 		
 		
 		//render screen
+		my_sky.draw();
 		my_player.draw();
+		my_level.draw();
+		
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000/60);//60 fps
 	}
