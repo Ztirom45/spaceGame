@@ -41,7 +41,22 @@ class player{
 		my_shot.draw();
 	};
 	
-	void update(){
+	void update(basic_shots* shot_pointer){
+		//shots
+		for(int i=0;i<shot_pointer->shots.size();i++){
+			SDL_Rect s_rect = shot_pointer->shots[i].rect_dsp;
+				
+			if(TOUCH_RECT(s_rect.x,s_rect.y,s_rect.w+s_rect.x,s_rect.h+s_rect.y,
+				rect_dsp.x,rect_dsp.y,rect_dsp.w+rect_dsp.x,rect_dsp.h+rect_dsp.y))
+				{
+					shot_pointer->del(i);
+					lives--;
+					i--;
+				}
+		
+		}
+		
+		//control
 		if(keys[KEY_W]){
 			rect_dsp.y -=speed;
 		}
@@ -58,6 +73,7 @@ class player{
 			update_texture(2);
 		}
 		
+		//lives
 		if(lives<=0){
 			loop = false;
 		}

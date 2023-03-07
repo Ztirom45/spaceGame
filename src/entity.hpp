@@ -56,12 +56,13 @@ class basic_shots{
 	public:
 		std::vector<entity> shots = {};
 		int dirc;
+		std::string costume = "img/Shot2.png";
 		
 		void add(int x,int y){
 			int new_size = shots.size();
 			shots.resize(new_size+1);
 			shots[new_size] = {};
-			shots[new_size].init("img/Shot.png");
+			shots[new_size].init(costume);
 			shots[new_size].path = {dirc};
 			
 			
@@ -99,7 +100,7 @@ class basic_shots{
 		
 		void init(std::string new_costume,int new_dirc){
 			dirc = new_dirc;
-			printf("%d\n",dirc);
+			costume = new_costume;
 			for(int i=0;i<shots.size();i++){
 				shots[i].init(new_costume);
 				shots[i].path = {dirc};
@@ -114,7 +115,7 @@ class basic_shots{
 		void update(){
 			for(int i=0;i<shots.size();i++){
 				shots[i].update();
-				if(shots[i].rect_dsp.y<0){
+				if(shots[i].rect_dsp.y<0||shots[i].rect_dsp.y>WIN_H){
 					del(i);
 				}
 			}
@@ -152,11 +153,12 @@ class enemy:public entity{
 			for(int i=120;i<160;i++){
 				path[i] = 4;
 			}
-			rect_dsp.w /= 20;
-			rect_dsp.h /= 20;
-	
+			
 			rect_dsp.x = 20;
 			rect_dsp.y = 100;
+			
+			rect_dsp.w *= 2;
+			rect_dsp.h *= 2;
 		}
 };
 
@@ -174,7 +176,7 @@ class level{
 			std::vector<enemy> new_enemys;
 			new_enemys.resize(pos.size());
 			for(int i=0;i<new_enemys.size();i++){
-				new_enemys[i].init("img/Ztirom.png");
+				new_enemys[i].init("img/Enemy.png");
 				new_enemys[i].rect_dsp.x = pos[i].x;
 				new_enemys[i].rect_dsp.y = pos[i].y;
 			}
@@ -186,7 +188,7 @@ class level{
 			int new_size = enemys.size();
 			enemys.resize(new_size+1);
 			enemys[new_size] = {};
-			enemys[new_size].init("img/Shot.png");
+			enemys[new_size].init("img/Shot2.png");
 			
 			
 			enemys[new_size].rect_dsp.x = x-enemys[new_size].rect_dsp.w;
@@ -213,9 +215,10 @@ class level{
 				enemys[i].rect_dsp.w *= 10;
 				enemys[i].rect_dsp.h *= 10;
 			}
-			my_shots.init("img/Shot.png",2);
+			my_shots.init("img/Shot2.png",2);
 		}
 		void update(basic_shots* shot_pointer){
+			
 			for(int i=0;i<enemys.size();i++){
 				//touch shots
 				for(int j=0;j<shot_pointer->shots.size();j++){
