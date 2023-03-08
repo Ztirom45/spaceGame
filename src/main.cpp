@@ -79,20 +79,18 @@ int main(){
 	my_player.rect_dsp.y = 500;
 	
 	//create enime
-	level my_level;
-	my_level.init("img/Enemy.png");
-	my_level.set_enemys({{50,200},{150,200},{250,200},{350,200},{450,200},{550,200},{650,200},{750,200}});
-	
+	game my_game;
+	my_game.init();
 
 	icon_bar live_bar;
-	live_bar.init(10,"img/LiveOn.png","img/LiveOff.png");
+	live_bar.init(20,"img/LiveOn.png","img/LiveOff.png");
 	
 	while(loop){
 		//update
 		events();
-		my_player.update(&my_level.my_shots);
+		my_player.update(&my_game.my_levels[my_game.level_now].my_shots);
 		my_sky.update();
-		my_level.update(&my_player.my_shot);
+		my_game.update(&my_player.my_shot);
 		live_bar.update(my_player.lives);
 		
 		//clear
@@ -102,7 +100,7 @@ int main(){
 		//render screen
 		my_sky.draw();
 		my_player.draw();
-		my_level.draw();
+		my_game.draw();
 		live_bar.draw();
 		
 		SDL_RenderPresent(rend);

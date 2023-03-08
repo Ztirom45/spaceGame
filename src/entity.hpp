@@ -302,6 +302,53 @@ class level{
 		}
 };
 
+class game{
+	public:
+		std::vector<level> my_levels;
+		int level_now = 0;
+		
+		void init(){
+			my_levels.resize(2);
+			
+			/*
+			----------------------------------------Levels------------------------------------
+			*/
+			//1
+			my_levels[0].init("img/Enemy.png");
+			
+			my_levels[0].set_enemys(
+			{
+				{50,200},{150,200},{250,200},{350,200},{450,200},{550,200},{650,200},{750,200},
+				{50,300},{150,300},{250,300},{350,300},{450,300},{550,300},{650,300},{750,300}
+			});
+			//2
+			my_levels[1].init("img/Enemy.png");
+			
+			my_levels[1].set_enemys(
+			{
+				{150,200},{250,200},{350,200},{450,200},{550,200},{650,200},
+						  {250,300},{350,300},{450,300},{550,300},
+									{350,400},{450,400}
+			});
+			
+			/*
+			----------------------------------------------------------------------------------
+			*/
+		
+		};
+		
+		void update(basic_shots* shot_pointer){
+			if(my_levels[level_now].enemys.size() == 0){
+				level_now++;
+			}
+			my_levels[level_now].update(shot_pointer);
+		};
+		
+		void draw(){
+			my_levels[level_now].draw();
+		};
+};
+
 class star:public particel{
 	public:
 		

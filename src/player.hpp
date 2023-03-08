@@ -4,7 +4,7 @@ class player{
 		SDL_Rect rect_img;	//pixel positions in images
 		std::vector<std::string> costumes; //L R M 
 		int costume = 0;
-		int lives = 10;
+		int lives = 20;
 		int speed = 10;
 		int scale = 2;
 		
