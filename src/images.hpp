@@ -36,3 +36,19 @@ void distroy_images(){
 		SDL_DestroyTexture((*i).second);
 	}  
 }
+
+void fill_screen(std::string image){
+	SDL_Rect rect_dsp;
+	rect_dsp.x = 0;
+	rect_dsp.y = 0;
+	rect_dsp.w = WIN_W;
+	rect_dsp.h = WIN_H;
+	
+	SDL_Rect rect_img;
+	rect_img.x = 0;
+	rect_img.y = 0;
+	rect_img.w = 500;
+	rect_img.h = 500;
+	
+	SDL_RenderCopy(rend,textures[image],&rect_img, &rect_dsp);
+}

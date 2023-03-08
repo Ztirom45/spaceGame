@@ -20,6 +20,7 @@
 static bool loop = true;
 static SDL_Renderer* rend;
 static bool keys[256];//sizeof Uint8 cant't use non letter keys
+static int GameEndEvent = 0;
 
 
 //libs
@@ -83,15 +84,16 @@ int main(){
 	my_game.init();
 
 	icon_bar live_bar;
-	live_bar.init(20,"img/LiveOn.png","img/LiveOff.png");
+	live_bar.init(10,"img/LiveOn.png","img/LiveOff.png");
 	
 	while(loop){
 		//update
 		events();
-		my_player.update(&my_game.my_levels[my_game.level_now].my_shots);
-		my_sky.update();
-		my_game.update(&my_player.my_shot);
-		live_bar.update(my_player.lives);
+		if(my_game.update(&my_player.my_shot)){
+			my_player.update(&my_game.my_levels[my_game.level_now].my_shots);
+			my_sky.update();
+			live_bar.update(my_player.lives);
+		}
 		
 		//clear
 		SDL_RenderClear(rend);
@@ -106,6 +108,21 @@ int main(){
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000/60);//60 fps
 	}
+	switch(GameEndEvent){
+		case 1:
+			SDL_RenderClear(rend);
+			fill_screen("img/Lose.png");
+			SDL_RenderPresent(rend);
+			SDL_Delay(1000);
+			break;
+		case 2:
+			SDL_RenderClear(rend);
+			fill_screen("img/Win.png");
+			SDL_RenderPresent(rend);
+			SDL_Delay(1000);
+			break;
+	}
+	
 	distroy_images();
 	SDL_Quit();
 }

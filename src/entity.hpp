@@ -25,11 +25,9 @@ class particel{
 		};
 	
 		void draw(){
-			SDL_Rect t1;
 			SDL_RenderCopy(rend,textures[costume],&rect_img, &rect_dsp);
 		};
 };
-
 
 class icon_bar{
 	//a class to create for example live bars
@@ -109,12 +107,23 @@ class basic_shots{
 			shots[new_size].rect_dsp.x = x-shots[new_size].rect_dsp.w;
 			shots[new_size].rect_dsp.y = y-shots[new_size].rect_dsp.h;
 		}
-		void shot(int x,int y){
+		void shot(int x,int y){//player 4x shot
 			add(x+25,y+55);
 			add(x+83,y+55);
 			
 			add(x+67,y+40);
 			add(x+39,y+40);
+		}
+		void shot2(int x,int y){//enimy 4x shot
+			add(x+13,y+80);
+			add(x+70,y+80);
+			
+			add(x+26,y+70);
+			add(x+57,y+70);
+		}
+		void shot3(int x,int y){//enimy 2x shot
+			add(x+13,y+80);
+			add(x+70,y+80);
 		}
 		
 		void del(int pos){
@@ -281,10 +290,16 @@ class level{
 				}
 				//update
 				enemys[i].update();
+				
 				//shot
-				if(rand()%100 == 1){
-					my_shots.shot(enemys[i].rect_dsp.x,enemys[i].rect_dsp.y);
+				if(rand()%200 == 1){
+					if (rand()%5 == 1){
+						my_shots.shot2(enemys[i].rect_dsp.x,enemys[i].rect_dsp.y);
+					}else{
+						my_shots.shot3(enemys[i].rect_dsp.x,enemys[i].rect_dsp.y);
+					}
 				}
+				
 				//die
 				if(enemys[i].lives<=0){
 					del(i);
@@ -294,6 +309,7 @@ class level{
 			}
 			my_shots.update();
 		}
+		
 		void draw(){
 			for(int i=0;i<enemys.size();i++){
 				enemys[i].draw();
@@ -309,7 +325,6 @@ class game{
 		
 		void init(){
 			my_levels.resize(2);
-			
 			/*
 			----------------------------------------Levels------------------------------------
 			*/
@@ -337,15 +352,25 @@ class game{
 		
 		};
 		
-		void update(basic_shots* shot_pointer){
-			if(my_levels[level_now].enemys.size() == 0){
-				level_now++;
+		bool update(basic_shots* shot_pointer){
+			
+			if(level_now==my_levels.size()){
+					GameEndEvent = 2;
+					loop=false;
+					return false;
+			}else{
+				if(my_levels[level_now].enemys.size() == 0){
+					if(++level_now==my_levels.size()){return false;}
+				}
+				my_levels[level_now].update(shot_pointer);
+				return true;
 			}
-			my_levels[level_now].update(shot_pointer);
 		};
 		
 		void draw(){
-			my_levels[level_now].draw();
+			if(!(level_now==my_levels.size())){
+				my_levels[level_now].draw();
+			}
 		};
 };
 

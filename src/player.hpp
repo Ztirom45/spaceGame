@@ -4,7 +4,7 @@ class player{
 		SDL_Rect rect_img;	//pixel positions in images
 		std::vector<std::string> costumes; //L R M 
 		int costume = 0;
-		int lives = 20;
+		int lives = 10;
 		int speed = 10;
 		int scale = 2;
 		
@@ -75,6 +75,7 @@ class player{
 		
 		//lives
 		if(lives<=0){
+			GameEndEvent = 1;
 			loop = false;
 		}
 		
