@@ -55,10 +55,10 @@ void events(){
 				loop = false;
 				break;
 			case SDL_KEYDOWN:
-				keys[event.key.keysym.sym] = true;
+				if(event.key.keysym.sym<256){keys[event.key.keysym.sym] = true;}
 				break;
 			case SDL_KEYUP:
-				keys[event.key.keysym.sym] = false;
+				if(event.key.keysym.sym<256){keys[event.key.keysym.sym] = false;}
 				break;
 			default:
 				break;
@@ -84,12 +84,16 @@ int main(){
 	my_level.set_enemys({{100,100},{200,100},{300,100},{400,100},{500,100},{600,100},{700,100},{800,100}});
 	
 
+	icon_bar live_bar;
+	live_bar.init(10,"img/LiveOn.png","img/LiveOff.png");
+	
 	while(loop){
 		//update
 		events();
 		my_player.update(&my_level.my_shots);
 		my_sky.update();
 		my_level.update(&my_player.my_shot);
+		live_bar.update(my_player.lives);
 		
 		//clear
 		SDL_RenderClear(rend);
@@ -99,6 +103,7 @@ int main(){
 		my_sky.draw();
 		my_player.draw();
 		my_level.draw();
+		live_bar.draw();
 		
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000/60);//60 fps

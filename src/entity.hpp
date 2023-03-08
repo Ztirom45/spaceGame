@@ -30,6 +30,45 @@ class particel{
 		};
 };
 
+//a class to create for example live bars
+class icon_bar{
+	public:
+		std::vector<particel> icons;
+		int icon_dst = 10;//distance betwen every icon
+		
+		std::string icon_on;
+		std::string icon_off;
+		
+		
+		void init(int icon_count,std::string new_icon_on,std::string new_icon_off){
+			icon_on  = new_icon_on;
+			icon_off = new_icon_off;
+			
+			icons.resize(icon_count);
+			for(int i=0;i<icons.size();i++){
+				icons[i].init(icon_on);
+				icons[i].rect_dsp.x = WIN_W-(i*30);
+				icons[i].rect_dsp.y = 10;
+			}
+		}
+		
+		void update(int bar_value){
+				for(int i=0;i<icons.size();i++){
+					if(i<bar_value){
+						icons[i].costume = icon_on;
+					}else{
+						icons[i].costume = icon_off;
+					}
+				}
+		}
+		
+		void draw(){
+			for(int i=0;i<icons.size();i++){
+				icons[i].draw();
+			}
+		}
+};
+
 class entity:public particel{
 	public:
 		std::vector<int> path = {1};//1:Up 2:Down 3:Left 4:Right
