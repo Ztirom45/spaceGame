@@ -30,8 +30,9 @@ class particel{
 		};
 };
 
-//a class to create for example live bars
+
 class icon_bar{
+	//a class to create for example live bars
 	public:
 		std::vector<particel> icons;
 		int icon_dst = 10;//distance betwen every icon
@@ -169,6 +170,20 @@ class basic_shots{
 class enemy:public entity{
 	public:
 		int lives = 10;
+		void create_path(std::vector<vec2i> new_path){//{value,steps}
+			
+			path.resize(0);
+			int c = 0;
+			for(int i=0;i<new_path.size();i++){
+				path.resize(c+new_path[i].y);
+				for(int j=0;j<new_path[i].y;j++){
+					path[c++] = new_path[i].x;
+				}
+			}
+			
+
+			
+		}
 		
 		void init(std::string new_costume){
 			costume = new_costume;
@@ -176,22 +191,13 @@ class enemy:public entity{
 			rect_dsp.y = 0;
 			rect_img.x = 0;
 			rect_img.y = 0;
-			update_texture(costume);
-			speed = 2;
-			path.resize(160);
-			for(int i=0;i<40;i++){
-				path[i] = 1;
-			}
-			for(int i=40;i<80;i++){
-				path[i] = 3;
-			}
 			
-			for(int i=80;i<120;i++){
-				path[i] = 2;
-			}
-			for(int i=120;i<160;i++){
-				path[i] = 4;
-			}
+			create_path({{1,100},{3,100},{2,100},{4,100}});
+			speed = 1;
+			
+			update_texture(costume);
+			
+			
 			
 			rect_dsp.x = 20;
 			rect_dsp.y = 100;
@@ -223,6 +229,7 @@ class level{
 			
 			
 		}
+		
 		void add(int x,int y){
 			int new_size = enemys.size();
 			enemys.resize(new_size+1);
@@ -256,6 +263,7 @@ class level{
 			}
 			my_shots.init("img/Shot2.png",2);
 		}
+		
 		void update(basic_shots* shot_pointer){
 			
 			for(int i=0;i<enemys.size();i++){

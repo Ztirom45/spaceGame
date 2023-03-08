@@ -81,7 +81,7 @@ int main(){
 	//create enime
 	level my_level;
 	my_level.init("img/Enemy.png");
-	my_level.set_enemys({{100,100},{200,100},{300,100},{400,100},{500,100},{600,100},{700,100},{800,100}});
+	my_level.set_enemys({{50,200},{150,200},{250,200},{350,200},{450,200},{550,200},{650,200},{750,200}});
 	
 
 	icon_bar live_bar;
