@@ -66,6 +66,15 @@ void events(){
 			}
 		}
 }
+
+void Menu(){
+	
+	draw_image("img/Back.png",{360,460});
+	draw_image("img/Play.png",{460,460});//middle of screen
+	draw_image("img/Skip.png",{560,460});
+	SDL_RenderPresent(rend);
+	SDL_Delay(1000);
+}
 int main(){
 	init();
 	//create sky
@@ -86,6 +95,8 @@ int main(){
 	icon_bar live_bar;
 	live_bar.init(10,"img/LiveOn.png","img/LiveOff.png");
 	
+	Menu();
+	
 	while(loop){
 		//update
 		events();
@@ -104,7 +115,6 @@ int main(){
 		my_player.draw();
 		my_game.draw();
 		live_bar.draw();
-		
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000/60);//60 fps
 	}

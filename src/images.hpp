@@ -37,6 +37,24 @@ void distroy_images(){
 	}  
 }
 
+void draw_image(std::string image,vec2i pos){
+	SDL_Rect rect_dsp;
+	SDL_Rect rect_img;
+	
+	SDL_QueryTexture(textures[image], NULL, NULL, &rect_dsp.w, &rect_dsp.h);
+	SDL_QueryTexture(textures[image], NULL, NULL, &rect_img.w, &rect_img.h);
+	
+	rect_dsp.w *= 2;
+	rect_dsp.h *= 2;
+	
+	rect_dsp.x = pos.x;
+	rect_dsp.y = pos.y;
+	rect_img.x = 0;
+	rect_img.y = 0;
+	
+	SDL_RenderCopy(rend,textures[image],&rect_img, &rect_dsp);
+}
+
 void fill_screen(std::string image){
 	SDL_Rect rect_dsp;
 	rect_dsp.x = 0;
