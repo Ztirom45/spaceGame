@@ -57,16 +57,16 @@ class player{
 		}
 		
 		//control
-		if(keys[KEY_W]){
+		if(keys[KEY_W]&&rect_dsp.y>0){
 			rect_dsp.y -=speed;
 		}
-		if(keys[KEY_S]){
+		if(keys[KEY_S]&&rect_dsp.y+rect_dsp.h<WIN_H){
 			rect_dsp.y +=speed;
 		}
-		if(keys[KEY_A]){
+		if(keys[KEY_A]&&rect_dsp.x>0){
 			rect_dsp.x -=speed;
 			update_texture(1);
-		}else if(keys[KEY_D]){
+		}else if(keys[KEY_D]&&rect_dsp.x+rect_dsp.w<WIN_W){
 			rect_dsp.x +=speed;
 			update_texture(0);
 		}else{

@@ -46,14 +46,15 @@ class icon_bar{
 			icons.resize(icon_count);
 			for(int i=0;i<icons.size();i++){
 				icons[i].init(icon_on);
-				icons[i].rect_dsp.x = WIN_W-(i*30);
+				icons[i].rect_dsp.x = WIN_W-((i+1)*30);
 				icons[i].rect_dsp.y = 10;
 			}
 		}
 		
 		void update(int bar_value){
-				for(int i=0;i<icons.size();i++){
-					if(i<bar_value){
+				for(int i=0;i<=icons.size();i++){
+					printf("%d\n",i);
+					if(i<=bar_value){
 						icons[i].costume = icon_on;
 					}else{
 						icons[i].costume = icon_off;
@@ -322,6 +323,7 @@ class game{
 	public:
 		std::vector<level> my_levels;
 		int level_now = 0;
+		int tick_delay = 100;//if == 0:update else:tick--
 		
 		void init(){
 			my_levels.resize(2);
@@ -352,24 +354,29 @@ class game{
 		
 		};
 		
-		bool update(basic_shots* shot_pointer){
-			
-			if(level_now==my_levels.size()){
-					GameEndEvent = 2;
-					loop=false;
-					return false;
-			}else{
-				if(my_levels[level_now].enemys.size() == 0){
-					if(++level_now==my_levels.size()){return false;}
-				}
-				my_levels[level_now].update(shot_pointer);
-				return true;
-			}
-		};
-		
 		void draw(){
 			if(!(level_now==my_levels.size())){
 				my_levels[level_now].draw();
+			}
+		};
+		
+		bool update(basic_shots* shot_pointer){
+			if(tick_delay<=0){
+				if(level_now==my_levels.size()){
+					GameEndEvent = 2;
+					loop=false;
+					return false;
+				}else{
+					if(my_levels[level_now].enemys.size() == 0){
+						if(++level_now==my_levels.size()){return false;}
+						else{tick_delay = 100;}
+					}
+					my_levels[level_now].update(shot_pointer);
+					return true;
+				}
+			}else{
+				tick_delay--;
+				return true;
 			}
 		};
 };

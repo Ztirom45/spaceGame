@@ -113,7 +113,7 @@ int main(){
 		//render screen
 		my_sky.draw();
 		my_player.draw();
-		my_game.draw();
+		if(my_game.tick_delay<=0){my_game.draw();}
 		live_bar.draw();
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000/60);//60 fps
