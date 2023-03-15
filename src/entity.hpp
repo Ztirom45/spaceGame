@@ -52,9 +52,8 @@ class icon_bar{
 		}
 		
 		void update(int bar_value){
-				for(int i=0;i<=icons.size();i++){
-					printf("%d\n",i);
-					if(i<=bar_value){
+				for(int i=0;i<icons.size();i++){
+					if(i<bar_value){
 						icons[i].costume = icon_on;
 					}else{
 						icons[i].costume = icon_off;
@@ -88,7 +87,6 @@ class entity:public particel{
 				case 4:rect_dsp.x-=speed;break;//Right
 			}
 		};
-		
 };
 
 class basic_shots{
@@ -227,6 +225,14 @@ class level{
 			enemys = new_enemys;
 		}
 		
+		void add_enemys(std::vector<enemy> new_enemys){
+			int old_size = enemys.size()-1;
+			enemys.resize(old_size+new_enemys.size());
+			for(int i=0;i<new_enemys.size();i++){
+				enemys[i+old_size] = new_enemys[i];
+			}
+		}
+		
 		void set_enemys(std::vector<vec2i> pos){
 			std::vector<enemy> new_enemys;
 			new_enemys.resize(pos.size());
@@ -240,6 +246,21 @@ class level{
 			
 		}
 		
+		void add_enemys(std::vector<vec2i> pos,std::vector<vec2i> path){
+			std::vector<enemy> new_enemys;
+			new_enemys.resize(pos.size());
+			for(int i=0;i<new_enemys.size();i++){
+				new_enemys[i].init("img/Enemy.png");
+				new_enemys[i].rect_dsp.x = pos[i].x;
+				new_enemys[i].rect_dsp.y = pos[i].y;
+				enemys[i].create_path(path);
+			}
+			
+			add_enemys(new_enemys);
+			
+			
+		}
+
 		void add(int x,int y){
 			int new_size = enemys.size();
 			enemys.resize(new_size+1);
@@ -250,8 +271,19 @@ class level{
 			enemys[new_size].rect_dsp.x = x-enemys[new_size].rect_dsp.w;
 			enemys[new_size].rect_dsp.y = y-enemys[new_size].rect_dsp.h;
 		}
-
 		
+		void add(int x,int y,std::vector<vec2i> path){
+			int new_size = enemys.size();
+			enemys.resize(new_size+1);
+			enemys[new_size].create_path(path);
+			enemys[new_size] = {};
+			enemys[new_size].init("img/Shot2.png");
+			
+			
+			enemys[new_size].rect_dsp.x = x-enemys[new_size].rect_dsp.w;
+			enemys[new_size].rect_dsp.y = y-enemys[new_size].rect_dsp.h;
+		}
+
 		void del(int pos){
 			//toggle pos and last position in array
 			enemy var = enemys[enemys.size()-1];
@@ -326,7 +358,7 @@ class game{
 		int tick_delay = 100;//if == 0:update else:tick--
 		
 		void init(){
-			my_levels.resize(2);
+			my_levels.resize(3);
 			/*
 			----------------------------------------Levels------------------------------------
 			*/
@@ -347,7 +379,21 @@ class game{
 						  {250,300},{350,300},{450,300},{550,300},
 									{350,400},{450,400}
 			});
+			//3
+			my_levels[2].init("img/Enemy.png");
 			
+			my_levels[2].set_enemys(
+			{
+				{100,200},{200,200},{300,200},{400,200},
+				{100,300},{200,300},{300,300},{400,300}
+			});
+			
+			my_levels[2].add_enemys({
+			//pos
+			{500,200},{600,200},{700,200},{800,200},
+			{500,300},{600,300},{700,300},{800,300}}
+			//path
+			,{{1,100},{4,100},{2,100},{3,100}});
 			/*
 			----------------------------------------------------------------------------------
 			*/
