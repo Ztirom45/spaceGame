@@ -7,3 +7,4 @@
 
 #define IMAGE_COUNT 1
 
+#define ButtonRes 40//resulution from button image

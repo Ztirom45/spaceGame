@@ -18,6 +18,7 @@
 
 //static vars
 static bool loop = true;
+static bool quit = false;
 static SDL_Renderer* rend;
 static bool keys[256];//sizeof Uint8 cant't use non letter keys
 static int GameEndEvent = 0;
@@ -30,6 +31,7 @@ static int GameEndEvent = 0;
 #include "images.hpp"
 #include "entity.hpp"
 #include "player.hpp"
+#include "Buttons.hpp"
 
 
 
@@ -54,6 +56,7 @@ void events(){
 
 			case SDL_QUIT:
 				loop = false;
+				quit = true;
 				break;
 			case SDL_KEYDOWN:
 				if(event.key.keysym.sym<256){keys[event.key.keysym.sym] = true;}
@@ -68,12 +71,36 @@ void events(){
 }
 
 void Menu(){
+	bool play = false;
+	bool skip = false;
+	bool back = false;
+
+	button button1;
+	button button2;
+	button button3;
+
+	button1.init(1,{360,460});
+	button2.init(2,{460,460});//middle of screen
+	button3.init(0,{560,460});
 	
-	draw_image("img/Back.png",{360,460});
-	draw_image("img/Play.png",{460,460});//middle of screen
-	draw_image("img/Skip.png",{560,460});
-	SDL_RenderPresent(rend);
-	SDL_Delay(1000);
+	while(loop){
+		events();
+		
+		if(keys[KEY_SPACE]){
+			play = true;
+			loop = false;
+		}
+		
+		button1.draw(back);
+		button2.draw(play);
+		button3.draw(skip);
+		
+		SDL_RenderPresent(rend);
+		SDL_Delay(1000/60);
+		
+		if(!loop&&!quit){SDL_Delay(250);}
+	}
+	if(!quit){loop = true;}
 }
 int main(){
 	init();
