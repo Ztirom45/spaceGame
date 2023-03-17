@@ -85,7 +85,7 @@ void Menu(){
 	button3.init(0,{560,760});
 	
 	wallpapers my_wallpapers;
-	my_wallpapers.init({"img/NormalMode.png","img/NormalMode.png","img/NormalMode.png"});
+	my_wallpapers.init({"img/NormalMode.png","img/NormalMode.png","img/HardcoreMode.png"});
 	
 	while(loop){
 		
