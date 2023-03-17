@@ -79,9 +79,9 @@ void Menu(){
 	button button2;
 	button button3;
 
-	button1.init(1,{360,460});
-	button2.init(2,{460,460});//middle of screen
-	button3.init(0,{560,460});
+	button1.init(1,{360,760});
+	button2.init(2,{460,760});//middle of screen
+	button3.init(0,{560,760});
 	
 	while(loop){
 		events();
@@ -90,7 +90,15 @@ void Menu(){
 			play = true;
 			loop = false;
 		}
+		if(keys[KEY_A]){
+			back = true;
+		}
+		if(keys[KEY_D]){
+			skip = true;
+		}
 		
+		draw_image("img/Background.png",{244,194},2);
+		draw_image("img/NormalMode.png",{250,200});
 		button1.draw(back);
 		button2.draw(play);
 		button3.draw(skip);
@@ -98,7 +106,12 @@ void Menu(){
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000/60);
 		
-		if(!loop&&!quit){SDL_Delay(250);}
+		if(play||back||skip){
+			SDL_Delay(250);
+			play = false;
+			back = false;
+			skip = false;
+			}
 	}
 	if(!quit){loop = true;}
 }
