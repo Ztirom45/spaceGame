@@ -97,8 +97,20 @@ void Menu(){
 			skip = true;
 		}
 		
+		
+		//draw
+		SDL_RenderClear(rend);
+		SDL_SetRenderDrawColor(rend, 38, 38, 38, 255);
+		
+		
 		draw_image("img/Background.png",{244,194},2);
+		draw_image("img/Background.png",{244-600,194},2);
+		draw_image("img/Background.png",{244+600,194},2);
+		
 		draw_image("img/NormalMode.png",{250,200});
+		draw_image("img/NormalMode.png",{250-600,200});
+		draw_image("img/NormalMode.png",{250+600,200});
+		
 		button1.draw(back);
 		button2.draw(play);
 		button3.draw(skip);
@@ -147,6 +159,7 @@ int main(){
 		}
 		
 		//clear
+		SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
 		SDL_RenderClear(rend);
 		
 		
