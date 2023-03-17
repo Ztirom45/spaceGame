@@ -32,6 +32,7 @@ static int GameEndEvent = 0;
 #include "entity.hpp"
 #include "player.hpp"
 #include "Buttons.hpp"
+#include "Wallpaper.hpp"
 
 
 
@@ -83,33 +84,36 @@ void Menu(){
 	button2.init(2,{460,760});//middle of screen
 	button3.init(0,{560,760});
 	
+	wallpapers my_wallpapers;
+	my_wallpapers.init({"img/NormalMode.png","img/NormalMode.png","img/NormalMode.png"});
+	
 	while(loop){
+		
 		events();
 		
 		if(keys[KEY_SPACE]){
 			play = true;
 			loop = false;
+			while(keys[KEY_SPACE]){events();}
 		}
 		if(keys[KEY_A]){
 			back = true;
+			my_wallpapers.xpos_goal += 600;
+			while(keys[KEY_A]){events();}
+			
 		}
 		if(keys[KEY_D]){
 			skip = true;
+			my_wallpapers.xpos_goal -= 600;
+			while(keys[KEY_D]){events();}
 		}
 		
-		
+		my_wallpapers.update();
 		//draw
 		SDL_RenderClear(rend);
 		SDL_SetRenderDrawColor(rend, 38, 38, 38, 255);
 		
-		
-		draw_image("img/Background.png",{244,194},2);
-		draw_image("img/Background.png",{244-600,194},2);
-		draw_image("img/Background.png",{244+600,194},2);
-		
-		draw_image("img/NormalMode.png",{250,200});
-		draw_image("img/NormalMode.png",{250-600,200});
-		draw_image("img/NormalMode.png",{250+600,200});
+		my_wallpapers.draw();
 		
 		button1.draw(back);
 		button2.draw(play);
@@ -118,12 +122,13 @@ void Menu(){
 		SDL_RenderPresent(rend);
 		SDL_Delay(1000/60);
 		
+		
 		if(play||back||skip){
-			SDL_Delay(250);
 			play = false;
 			back = false;
 			skip = false;
 			}
+		
 	}
 	if(!quit){loop = true;}
 }
