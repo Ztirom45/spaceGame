@@ -23,7 +23,6 @@ static SDL_Renderer* rend;
 static bool keys[256];//sizeof Uint8 cant't use non letter keys
 static int GameEndEvent = 0;
 
-
 //libs
 #include "config.hpp"
 #include "cvec.hpp"
@@ -32,7 +31,7 @@ static int GameEndEvent = 0;
 #include "entity.hpp"
 #include "player.hpp"
 #include "Buttons.hpp"
-#include "Wallpaper.hpp"
+#include "GameModes.hpp"
 
 
 
@@ -84,8 +83,8 @@ void Menu(){
 	button2.init(2,{460,760});//middle of screen
 	button3.init(0,{560,760});
 	
-	wallpapers my_wallpapers;
-	my_wallpapers.init({"img/NormalMode.png","img/NormalMode.png","img/HardcoreMode.png"});
+	GameModes my_GameModes;
+	my_GameModes.init({{"img/NormalMode.png",0},{"img/NormalMode.png",0},{"img/HardcoreMode.png",1}});
 	
 	while(loop){
 		
@@ -98,22 +97,22 @@ void Menu(){
 		}
 		if(keys[KEY_A]){
 			back = true;
-			my_wallpapers.xpos_goal += 600;
+			my_GameModes.xpos_goal += 600;
 			while(keys[KEY_A]){events();}
 			
 		}
 		if(keys[KEY_D]){
 			skip = true;
-			my_wallpapers.xpos_goal -= 600;
+			my_GameModes.xpos_goal -= 600;
 			while(keys[KEY_D]){events();}
 		}
 		
-		my_wallpapers.update();
+		my_GameModes.update();
 		//draw
 		SDL_RenderClear(rend);
 		SDL_SetRenderDrawColor(rend, 38, 38, 38, 255);
 		
-		my_wallpapers.draw();
+		my_GameModes.draw();
 		
 		button1.draw(back);
 		button2.draw(play);
@@ -130,7 +129,9 @@ void Menu(){
 			}
 		
 	}
-	if(!quit){loop = true;}
+	my_GameModes.end();
+	if(quit){loop = false;}
+	
 }
 int main(){
 	init();
@@ -138,8 +139,7 @@ int main(){
 	sky my_sky;
 	my_sky.init();
 
-	//craete player
-	player my_player;
+	//player settings 
 	my_player.init({"img/SpaceShipL.png","img/SpaceShipR.png","img/SpaceShipM.png"});
 	
 	my_player.rect_dsp.x = 500;

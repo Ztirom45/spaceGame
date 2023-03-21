@@ -92,3 +92,5 @@ class player{
 		my_shot.update();
 	}
 };
+
+static player my_player;
