@@ -149,6 +149,7 @@ class basic_shots{
 		void init(std::string new_costume,int new_dirc){
 			dirc = new_dirc;
 			costume = new_costume;
+			shots.resize(0);
 			for(int i=0;i<shots.size();i++){
 				shots[i].init(new_costume);
 				shots[i].path = {dirc};
@@ -359,6 +360,8 @@ class game{
 		
 		void init(){
 			my_levels.resize(3);
+			level_now = 0;
+			tick_delay = 100;
 			/*
 			----------------------------------------Levels------------------------------------
 			*/
