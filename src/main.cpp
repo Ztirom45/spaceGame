@@ -1,4 +1,4 @@
-//TODO: GameModes.hpp:74
+//TODO:implement shot_mode 3
 //SDL
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

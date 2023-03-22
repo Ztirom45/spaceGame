@@ -86,7 +86,6 @@ class entity:public particel{
 				case 2:pos.y+=speed;break;//Left
 				case 4:pos.x-=speed;break;//Right
 			}
-			printf("%f %d\n",pos.y,speed);
 			rect_dsp.x=pos.x;
 			rect_dsp.y=pos.y;
 		};
@@ -330,7 +329,6 @@ class level{
 			switch(enemys[i].shot_mode){
 			case 1://enimy1
 				if(rand()%200 == 1){
-					printf("1\n");
 					if (rand()%5 == 1){
 						my_shots.shot2(enemys[i].pos.x,enemys[i].pos.y);
 					}else{
@@ -339,6 +337,7 @@ class level{
 				}
 				break;
 			case 2://enimy2
+				printf("2\n");
 				if(rand()%50 == 1&&enemys[i].path[enemys[i].path_pos]!=5){
 					my_shots.shot2(enemys[i].pos.x,enemys[i].pos.y);
 				}
@@ -408,7 +407,7 @@ class game{
 		int tick_delay = 100;//if == 0:update else:tick--
 		
 		void init(){
-			my_levels.resize(3);
+			my_levels.resize(5);
 			level_now = 0;
 			tick_delay = 100;
 			/*
@@ -447,7 +446,6 @@ class game{
 				//path
 				,{{1,100},{4,100},{2,100},{3,100}});
 			
-			
 			my_levels[2].costume = "img/Enemy2.png";
 			my_levels[2].shot_mode = 2;
 			my_levels[2].speed = 1.5;
@@ -458,6 +456,28 @@ class game{
 			{400,0},{500,0}}
 			//path
 			,{{5,150},{2,100},{1,100},{5,50}});
+			
+			//4
+			my_levels[3].init("img/Enemy2.png");
+			my_levels[3].shot_mode = 2;
+			my_levels[3].lives = 20;
+			
+			my_levels[3].set_enemys(
+			{
+				{50,200},{150,200},{250,200},{350,200},{450,200},{550,200},{650,200},{750,200},
+				{50,300},{150,300},{250,300},{350,300},{450,300},{550,300},{650,300},{750,300}
+			});
+			//5
+			my_levels[4].init("img/Enemy2.png");
+			my_levels[4].shot_mode = 2;
+			my_levels[4].lives = 20;
+			
+			my_levels[4].set_enemys(
+			{
+				{150,200},{250,200},{350,200},{450,200},{550,200},{650,200},
+						  {250,300},{350,300},{450,300},{550,300},
+									{350,400},{450,400}
+			});
 			/*
 			----------------------------------------------------------------------------------
 			*/
