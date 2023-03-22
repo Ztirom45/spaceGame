@@ -178,6 +178,8 @@ class basic_shots{
 
 class enemy:public entity{
 	public:
+		int HitTickCounter = 0;
+		std::string costume_hit;
 		int lives = 10;
 		void create_path(std::vector<vec2i> new_path){//{value,steps}
 			
@@ -194,8 +196,9 @@ class enemy:public entity{
 			
 		}
 		
-		void init(std::string new_costume){
+		void init(std::string new_costume,std::string new_costume_hit){
 			costume = new_costume;
+			costume_hit = new_costume_hit;
 			rect_dsp.x = 0;
 			rect_dsp.y = 0;
 			rect_img.x = 0;
@@ -214,6 +217,15 @@ class enemy:public entity{
 			rect_dsp.w *= 2;
 			rect_dsp.h *= 2;
 		}
+		void draw(){
+			if(HitTickCounter>=0){
+				HitTickCounter--;
+				SDL_RenderCopy(rend,textures[costume_hit],&rect_img, &rect_dsp);
+			}
+			else{
+				SDL_RenderCopy(rend,textures[costume],&rect_img, &rect_dsp);
+			}
+		};
 };
 
 class level{
@@ -238,7 +250,7 @@ class level{
 			std::vector<enemy> new_enemys;
 			new_enemys.resize(pos.size());
 			for(int i=0;i<new_enemys.size();i++){
-				new_enemys[i].init("img/Enemy.png");
+				new_enemys[i].init("img/Enemy.png","img/Enemy_hit.png");
 				new_enemys[i].rect_dsp.x = pos[i].x;
 				new_enemys[i].rect_dsp.y = pos[i].y;
 			}
@@ -251,7 +263,7 @@ class level{
 			std::vector<enemy> new_enemys;
 			new_enemys.resize(pos.size());
 			for(int i=0;i<new_enemys.size();i++){
-				new_enemys[i].init("img/Enemy.png");
+				new_enemys[i].init("img/Enemy.png","img/Enemy_hit.png");
 				new_enemys[i].rect_dsp.x = pos[i].x;
 				new_enemys[i].rect_dsp.y = pos[i].y;
 				enemys[i].create_path(path);
@@ -266,7 +278,7 @@ class level{
 			int new_size = enemys.size();
 			enemys.resize(new_size+1);
 			enemys[new_size] = {};
-			enemys[new_size].init("img/Shot2.png");
+			enemys[new_size].init("img/Enemy.png","img/Enemy_hit.png");
 			
 			
 			enemys[new_size].rect_dsp.x = x-enemys[new_size].rect_dsp.w;
@@ -278,7 +290,7 @@ class level{
 			enemys.resize(new_size+1);
 			enemys[new_size].create_path(path);
 			enemys[new_size] = {};
-			enemys[new_size].init("img/Shot2.png");
+			enemys[new_size].init("img/Enemy.png","img/Enemy_hit.png");
 			
 			
 			enemys[new_size].rect_dsp.x = x-enemys[new_size].rect_dsp.w;
@@ -298,7 +310,7 @@ class level{
 		
 		void init(std::string new_costume){
 			for(int i=0;i<enemys.size();i++){
-				enemys[i].init(new_costume);
+				enemys[i].init(new_costume,"img/Enemy_hit.png");
 				enemys[i].rect_dsp.x = rand()%(WIN_W/2)+100;
 				enemys[i].rect_dsp.y = WIN_H;
 				enemys[i].rect_dsp.w *= 10;
@@ -319,6 +331,7 @@ class level{
 						{
 							shot_pointer->del(j);
 							enemys[i].lives--;
+							enemys[i].HitTickCounter=3;
 							j--;
 						}
 				}

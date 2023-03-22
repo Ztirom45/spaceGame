@@ -70,13 +70,18 @@ class GameModes{
 			}
 		}
 		
-		void end(){
+		int end(){
+			//while(float((int)xpos/600)==xpos/600){update();}//updates the wallpapers until one is selected
+			
 			for(int i=0;i<my_GameModes.size();i++){
 				if(my_GameModes[i].xpos+xpos==0){
 					my_GameModes[i].end();
 					break;
 				}
-		}
+				
+			}
+			return 0;
+		
 		}
 	
 };
