@@ -72,8 +72,8 @@ class entity:public particel{
 	public:
 		std::vector<int> path = {1};//1:Up 2:Down 3:Left 4:Right
 		int path_pos = 1;
-		
-		int speed = 10;
+		vec2f pos = {0,0};
+		float speed = 10;
 		
 		void update(){
 			if(path.size()<=path_pos){
@@ -81,11 +81,14 @@ class entity:public particel{
 				path_pos = 0;
 			}
 			switch(path[path_pos++]){
-				case 1:rect_dsp.y-=speed;break;//Up
-				case 3:rect_dsp.x+=speed;break;//Down
-				case 2:rect_dsp.y+=speed;break;//Left
-				case 4:rect_dsp.x-=speed;break;//Right
+				case 1:pos.y-=speed;break;//Up
+				case 3:pos.x+=speed;break;//Down
+				case 2:pos.y+=speed;break;//Left
+				case 4:pos.x-=speed;break;//Right
 			}
+			printf("%f %d\n",pos.y,speed);
+			rect_dsp.x=pos.x;
+			rect_dsp.y=pos.y;
 		};
 };
 
@@ -103,8 +106,8 @@ class basic_shots{
 			shots[new_size].path = {dirc};
 			
 			
-			shots[new_size].rect_dsp.x = x-shots[new_size].rect_dsp.w;
-			shots[new_size].rect_dsp.y = y-shots[new_size].rect_dsp.h;
+			shots[new_size].pos.x = x-shots[new_size].rect_dsp.w;
+			shots[new_size].pos.y = y-shots[new_size].rect_dsp.h;
 		}
 		void shot(int x,int y){//player 4x shot
 			add(x+25,y+55);
@@ -125,25 +128,25 @@ class basic_shots{
 			add(x+70,y+80);
 		}
 		
-		void del(int pos){
+		void del(int Array_pos){
 			//toggle pos and last position in array
 			entity var = shots[shots.size()-1];
 			
-			shots[shots.size()-1] = shots[pos];
-			shots[pos] 			= var;
+			shots[shots.size()-1] = shots[Array_pos];
+			shots[Array_pos] 			= var;
 			
 			//del last shot(shot[pos] before)
 			shots.resize(shots.size()-1);
 		}
 		
 		std::vector<vec2i>get_pos(){
-			std::vector<vec2i>pos;
-			pos.resize(shots.size()-1);
+			std::vector<vec2i>ret_pos;
+			ret_pos.resize(shots.size()-1);
 			for(int i=0;i<shots.size();i++){
-				pos[i].x = shots[i].rect_dsp.x;
-				pos[i].y = shots[i].rect_dsp.y;
+				ret_pos[i].x = shots[i].pos.x;
+				ret_pos[i].y = shots[i].pos.y;
 			}
-			return pos;
+			return ret_pos;
 		}
 		
 		void init(std::string new_costume,int new_dirc){
@@ -179,6 +182,7 @@ class basic_shots{
 class enemy:public entity{
 	public:
 		int HitTickCounter = 0;
+		int shot_mode = 1;
 		std::string costume_hit;
 		int lives = 10;
 		void create_path(std::vector<vec2i> new_path){//{value,steps}
@@ -232,6 +236,11 @@ class level{
 	public:
 		std::vector<enemy> enemys = {};
 		basic_shots my_shots;
+		//settings for enemy generation
+		std::string costume;
+		int shot_mode = 1;
+		int lives = 10;
+		float speed = 1;
 		
 		void set_enemys(std::vector<enemy> new_enemys){
 			enemys.resize(new_enemys.size()-1);
@@ -239,7 +248,7 @@ class level{
 		}
 		
 		void add_enemys(std::vector<enemy> new_enemys){
-			int old_size = enemys.size()-1;
+			int old_size = enemys.size();
 			enemys.resize(old_size+new_enemys.size());
 			for(int i=0;i<new_enemys.size();i++){
 				enemys[i+old_size] = new_enemys[i];
@@ -250,9 +259,12 @@ class level{
 			std::vector<enemy> new_enemys;
 			new_enemys.resize(pos.size());
 			for(int i=0;i<new_enemys.size();i++){
-				new_enemys[i].init("img/Enemy.png","img/Enemy_hit.png");
-				new_enemys[i].rect_dsp.x = pos[i].x;
-				new_enemys[i].rect_dsp.y = pos[i].y;
+				new_enemys[i].init(costume,"img/Enemy_hit.png");
+				new_enemys[i].pos.x = pos[i].x;
+				new_enemys[i].pos.y = pos[i].y;
+				new_enemys[i].shot_mode = shot_mode;
+				new_enemys[i].speed = speed;
+				new_enemys[i].lives = lives;
 			}
 			set_enemys(new_enemys);
 			
@@ -263,12 +275,14 @@ class level{
 			std::vector<enemy> new_enemys;
 			new_enemys.resize(pos.size());
 			for(int i=0;i<new_enemys.size();i++){
-				new_enemys[i].init("img/Enemy.png","img/Enemy_hit.png");
-				new_enemys[i].rect_dsp.x = pos[i].x;
-				new_enemys[i].rect_dsp.y = pos[i].y;
-				enemys[i].create_path(path);
+				new_enemys[i].init(costume,"img/Enemy_hit.png");
+				new_enemys[i].pos.x = pos[i].x;
+				new_enemys[i].pos.y = pos[i].y;
+				new_enemys[i].create_path(path);
+				new_enemys[i].shot_mode = shot_mode;
+				new_enemys[i].speed = speed;
+				new_enemys[i].lives = lives;
 			}
-			
 			add_enemys(new_enemys);
 			
 			
@@ -278,11 +292,13 @@ class level{
 			int new_size = enemys.size();
 			enemys.resize(new_size+1);
 			enemys[new_size] = {};
-			enemys[new_size].init("img/Enemy.png","img/Enemy_hit.png");
+			enemys[new_size].init(costume,"img/Enemy_hit.png");
 			
-			
-			enemys[new_size].rect_dsp.x = x-enemys[new_size].rect_dsp.w;
-			enemys[new_size].rect_dsp.y = y-enemys[new_size].rect_dsp.h;
+			enemys[new_size].pos.x = x-enemys[new_size].rect_dsp.w;
+			enemys[new_size].pos.y = y-enemys[new_size].rect_dsp.h;
+			enemys[new_size].shot_mode = shot_mode;
+			enemys[new_size].speed = speed;
+			enemys[new_size].lives = lives;
 		}
 		
 		void add(int x,int y,std::vector<vec2i> path){
@@ -290,11 +306,13 @@ class level{
 			enemys.resize(new_size+1);
 			enemys[new_size].create_path(path);
 			enemys[new_size] = {};
-			enemys[new_size].init("img/Enemy.png","img/Enemy_hit.png");
+			enemys[new_size].init(costume,"img/Enemy_hit.png");
 			
-			
-			enemys[new_size].rect_dsp.x = x-enemys[new_size].rect_dsp.w;
-			enemys[new_size].rect_dsp.y = y-enemys[new_size].rect_dsp.h;
+			enemys[new_size].pos.x = x-enemys[new_size].rect_dsp.w;
+			enemys[new_size].pos.y = y-enemys[new_size].rect_dsp.h;
+			enemys[new_size].shot_mode = shot_mode;
+			enemys[new_size].speed = speed;
+			enemys[new_size].lives = lives;
 		}
 
 		void del(int pos){
@@ -308,7 +326,31 @@ class level{
 			enemys.resize(enemys.size()-1);
 		}
 		
+		void shot(int i){
+			switch(enemys[i].shot_mode){
+			case 1://enimy1
+				if(rand()%200 == 1){
+					printf("1\n");
+					if (rand()%5 == 1){
+						my_shots.shot2(enemys[i].pos.x,enemys[i].pos.y);
+					}else{
+						my_shots.shot3(enemys[i].pos.x,enemys[i].pos.y);
+					}
+				}
+				break;
+			case 2://enimy2
+				if(rand()%50 == 1&&enemys[i].path[enemys[i].path_pos]!=5){
+					my_shots.shot2(enemys[i].pos.x,enemys[i].pos.y);
+				}
+				break;
+			}
+		}
+		
 		void init(std::string new_costume){
+			costume = new_costume;
+			shot_mode = 1;
+			speed = 1;
+			lives = 10;
 			for(int i=0;i<enemys.size();i++){
 				enemys[i].init(new_costume,"img/Enemy_hit.png");
 				enemys[i].rect_dsp.x = rand()%(WIN_W/2)+100;
@@ -339,13 +381,7 @@ class level{
 				enemys[i].update();
 				
 				//shot
-				if(rand()%200 == 1){
-					if (rand()%5 == 1){
-						my_shots.shot2(enemys[i].rect_dsp.x,enemys[i].rect_dsp.y);
-					}else{
-						my_shots.shot3(enemys[i].rect_dsp.x,enemys[i].rect_dsp.y);
-					}
-				}
+				shot(i);
 				
 				//die
 				if(enemys[i].lives<=0){
@@ -400,16 +436,28 @@ class game{
 			
 			my_levels[2].set_enemys(
 			{
+				{500,200},{600,200},{700,200},{800,200},
+				{500,300},{600,300},{700,300},{800,300}}
+			);
+			
+			my_levels[2].add_enemys({
+				//pos
 				{100,200},{200,200},{300,200},{400,200},
-				{100,300},{200,300},{300,300},{400,300}
-			});
+				{100,300},{200,300},{300,300},{400,300}}
+				//path
+				,{{1,100},{4,100},{2,100},{3,100}});
+			
+			
+			my_levels[2].costume = "img/Enemy2.png";
+			my_levels[2].shot_mode = 2;
+			my_levels[2].speed = 1.5;
+			my_levels[2].lives = 20;
 			
 			my_levels[2].add_enemys({
 			//pos
-			{500,200},{600,200},{700,200},{800,200},
-			{500,300},{600,300},{700,300},{800,300}}
+			{400,0},{500,0}}
 			//path
-			,{{1,100},{4,100},{2,100},{3,100}});
+			,{{5,150},{2,100},{1,100},{5,50}});
 			/*
 			----------------------------------------------------------------------------------
 			*/
