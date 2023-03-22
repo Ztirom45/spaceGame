@@ -200,6 +200,7 @@ int main(){
 		my_player.rect_dsp.x = 500;
 		my_player.rect_dsp.y = 500;
 		my_game.init();
+		GameEndEvent=0;
 		loop = true;
 	}
 	distroy_images();
