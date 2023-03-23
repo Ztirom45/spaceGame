@@ -2,7 +2,7 @@
 
 a game simple space game written in c++ using SDL2
 
-<table>
+<table border:0px solid black>
 	<tr>
 		<th><img src="https://github.com/Ztirom45/SpaceGame/blob/main/img/Menu.png"></th>
 		<th><img src="https://github.com/Ztirom45/SpaceGame/blob/main/img/NormalMode.png"></th>
