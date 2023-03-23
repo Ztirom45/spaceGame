@@ -11,5 +11,5 @@ a game simple space game written in c++ using SDL2
 - different enemy types
 
 ##### Building(unix-like):	
-- compile: `$sh build/compile.sh`
-- run: `$./bin/main`
+- compile: `$ sh build/compile.sh`
+- run: `$ ./bin/main`
