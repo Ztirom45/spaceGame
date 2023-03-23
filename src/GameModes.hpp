@@ -21,10 +21,13 @@ class GameMode{
 			switch(my_GameMode){
 				case 0://normal mode
 					loop = true;
+					my_player.lives = 10;
+					live_bar.init(10,"img/LiveOn.png","img/LiveOff.png");
 					break;
 				case 1://Harcore mode
 					loop = true;
 					my_player.lives = 1;
+					live_bar.init(1,"img/LiveOn.png","img/LiveOff.png");
 					break;
 			}
 			

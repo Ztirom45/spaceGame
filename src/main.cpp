@@ -1,4 +1,3 @@
-//TODO:implement shot_mode 3
 //SDL
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -152,8 +151,6 @@ int main(){
 	game my_game;
 	my_game.init();
 
-	icon_bar live_bar;
-	live_bar.init(10,"img/LiveOn.png","img/LiveOff.png");
 	
 	while(gameloop){
 		Menu();
@@ -196,7 +193,6 @@ int main(){
 		}
 		//reset game
 		my_player.init({"img/SpaceShipL.png","img/SpaceShipR.png","img/SpaceShipM.png"});
-		my_player.lives = 10;
 		my_player.rect_dsp.x = 500;
 		my_player.rect_dsp.y = 500;
 		my_game.init();

@@ -68,6 +68,8 @@ class icon_bar{
 		}
 };
 
+static icon_bar live_bar;
+
 class entity:public particel{
 	public:
 		std::vector<int> path = {1};//1:Up 2:Down 3:Left 4:Right
@@ -337,8 +339,13 @@ class level{
 				}
 				break;
 			case 2://enimy2
-				printf("2\n");
 				if(rand()%50 == 1&&enemys[i].path[enemys[i].path_pos]!=5){
+					my_shots.shot2(enemys[i].pos.x,enemys[i].pos.y);
+				}
+				break;
+			case 3://enimy2
+				printf("3\n");
+				if(rand()%150 == 1&&enemys[i].path[enemys[i].path_pos]!=5){
 					my_shots.shot2(enemys[i].pos.x,enemys[i].pos.y);
 				}
 				break;
@@ -459,7 +466,7 @@ class game{
 			
 			//4
 			my_levels[3].init("img/Enemy2.png");
-			my_levels[3].shot_mode = 2;
+			my_levels[3].shot_mode = 3;
 			my_levels[3].lives = 20;
 			
 			my_levels[3].set_enemys(
@@ -469,7 +476,7 @@ class game{
 			});
 			//5
 			my_levels[4].init("img/Enemy2.png");
-			my_levels[4].shot_mode = 2;
+			my_levels[4].shot_mode = 3;
 			my_levels[4].lives = 20;
 			
 			my_levels[4].set_enemys(
