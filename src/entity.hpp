@@ -344,7 +344,6 @@ class level{
 				}
 				break;
 			case 3://enimy2
-				printf("3\n");
 				if(rand()%150 == 1&&enemys[i].path[enemys[i].path_pos]!=5){
 					my_shots.shot2(enemys[i].pos.x,enemys[i].pos.y);
 				}
