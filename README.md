@@ -2,10 +2,10 @@
 
 a game simple space game written in c++ using SDL2
 
-<img align="left" width="50%" height="50%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/NormalMode.png">
-<img align="left" width="50%" height="50%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/HardcoreMode.png">
-<img align="left" width="50%" height="50%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/Menu.png">
-<img align="left" width="50%" height="50%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/NormalMode.png">
+<img align="left" width="40%" height="40%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/Menu.png">
+<img align="left" width="40%" height="40%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/HardcoreMode.png">
+<img align="left" width="40%" height="40%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/Menu.png">
+<img align="left" width="40%" height="40%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/NormalMode.png">
 
 
 #####Features:
