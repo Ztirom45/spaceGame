@@ -2,15 +2,16 @@
 
 a game simple space game written in c++ using SDL2
 
-<img align="left" width="45%" height="45%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/Menu.png">
-<img align="left" width="45%" height="45%" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/HardcoreMode.png">
-
-<p> </p>
-
-<img align="left" width="45%" height="45" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/Menu.png">
-<img align="left" width="45%" height="45" src="https://github.com/Ztirom45/SpaceGame/blob/main/img/NormalMode.png">
-
-
+<table>
+	<tr>
+		<th><img src="https://github.com/Ztirom45/SpaceGame/blob/main/img/Menu.png"></th>
+		<th><img src="https://github.com/Ztirom45/SpaceGame/blob/main/img/NormalMode.png"></th>
+	</tr>
+		<tr>
+		<th><img src="https://github.com/Ztirom45/SpaceGame/blob/main/img/HardcoreMode.png"></th>
+		<th><img src="https://github.com/Ztirom45/SpaceGame/blob/main/img/Menu.png"></th>
+	</tr>
+</table>
 ##### Features:
 - Menu
 - Gamemodes
