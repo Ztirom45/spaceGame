@@ -10,6 +10,6 @@ a game simple space game written in c++ using SDL2
 - 5 Level
 - different enemy types
 
-##### Building(unix-like):	
+##### Building(linux):
 - compile: `$ sh build/compile.sh`
 - run: `$ ./bin/main`
